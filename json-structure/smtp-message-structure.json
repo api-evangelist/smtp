@@ -1,0 +1,31 @@
+{
+  "title": "SMTP Email Message Structure",
+  "description": "JSON structure documentation for an email message per RFC 5321/5322",
+  "type": "object",
+  "fields": [
+    {"name": "from", "type": "email", "required": true, "description": "Sender email address (RFC 5322 From / SMTP MAIL FROM)"},
+    {"name": "to", "type": "email|array", "required": true, "description": "Primary recipient(s) (RFC 5322 To / SMTP RCPT TO)"},
+    {"name": "cc", "type": "email|array", "required": false, "description": "Carbon copy recipients"},
+    {"name": "bcc", "type": "email|array", "required": false, "description": "Blind carbon copy (not in message headers)"},
+    {"name": "replyTo", "type": "email", "required": false, "description": "Reply-To address"},
+    {"name": "subject", "type": "string", "required": true, "description": "Email subject line"},
+    {"name": "date", "type": "datetime", "required": false, "description": "Message creation timestamp"},
+    {"name": "messageId", "type": "string", "required": false, "description": "Unique message ID in <local@domain> format"},
+    {"name": "body", "type": "object", "required": false, "description": "Message body content", "fields": [
+      {"name": "text", "type": "string", "required": false, "description": "Plain text body"},
+      {"name": "html", "type": "string", "required": false, "description": "HTML body"},
+      {"name": "mimeType", "type": "string", "required": false, "description": "MIME content type"}
+    ]},
+    {"name": "headers", "type": "object", "required": false, "description": "Additional RFC 5322 headers"},
+    {"name": "attachments", "type": "array", "required": false, "description": "MIME attachments", "items": {
+      "type": "object",
+      "fields": [
+        {"name": "filename", "type": "string", "required": true},
+        {"name": "contentType", "type": "string", "required": true},
+        {"name": "contentId", "type": "string", "required": false, "description": "For inline attachments"},
+        {"name": "disposition", "type": "enum", "required": false, "values": ["attachment", "inline"]},
+        {"name": "size", "type": "integer", "required": false, "description": "Size in bytes"}
+      ]
+    }}
+  ]
+}

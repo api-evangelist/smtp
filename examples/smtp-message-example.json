@@ -1,0 +1,31 @@
+{
+  "description": "A complete RFC 5322 email message structure with MIME multipart body and attachment",
+  "standard": "RFC 5322",
+  "message": {
+    "from": "alice@sender.com",
+    "to": ["bob@example.com", "charlie@example.com"],
+    "cc": "diana@example.com",
+    "subject": "Q2 Report - Attached",
+    "date": "2026-05-02T10:00:00Z",
+    "messageId": "<20260502100000.abc123@sender.com>",
+    "headers": {
+      "MIME-Version": "1.0",
+      "Content-Type": "multipart/mixed; boundary=\"BOUNDARY_ABC123\"",
+      "X-Mailer": "ExampleMailer 1.0"
+    },
+    "body": {
+      "mimeType": "multipart/mixed",
+      "text": "Please find the Q2 report attached.\n\nBest regards,\nAlice",
+      "html": "<p>Please find the Q2 report attached.</p><p>Best regards,<br>Alice</p>"
+    },
+    "attachments": [
+      {
+        "filename": "q2-report-2026.pdf",
+        "contentType": "application/pdf",
+        "disposition": "attachment",
+        "size": 204800
+      }
+    ]
+  },
+  "rawHeaders": "From: Alice Smith <alice@sender.com>\r\nTo: Bob Jones <bob@example.com>, Charlie Brown <charlie@example.com>\r\nCc: Diana Prince <diana@example.com>\r\nSubject: Q2 Report - Attached\r\nDate: Fri, 02 May 2026 10:00:00 +0000\r\nMessage-ID: <20260502100000.abc123@sender.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"BOUNDARY_ABC123\""
+}

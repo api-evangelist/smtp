@@ -1,0 +1,251 @@
+vocabulary:
+  name: SMTP Vocabulary
+  description: >-
+    Normative vocabulary for the Simple Mail Transfer Protocol (SMTP) as defined
+    in RFC 5321, RFC 5322, and related IETF standards. Covers commands, response
+    codes, extensions, authentication mechanisms, and email message concepts.
+  version: "RFC 5321 (2008)"
+  created: "2026-05-02"
+  modified: "2026-05-02"
+  tags:
+    - SMTP
+    - Email
+    - Internet Standards
+    - IETF
+
+# SMTP Commands (RFC 5321 Section 4.1)
+commands:
+  - command: EHLO
+    syntax: "EHLO <domain>"
+    description: >-
+      Extended HELLO - modern client identification. Server responds with list
+      of supported ESMTP extensions. Preferred over HELO.
+    success_code: 250
+    introduced: "RFC 1869 (ESMTP)"
+
+  - command: HELO
+    syntax: "HELO <domain>"
+    description: >-
+      Legacy HELLO command for client identification. Use EHLO for modern clients.
+    success_code: 250
+    introduced: "RFC 821 (original SMTP)"
+
+  - command: MAIL FROM
+    syntax: "MAIL FROM:<reverse-path>"
+    description: >-
+      Initiates a mail transaction and specifies the envelope sender address.
+      One per transaction. Can include SIZE and other extension parameters.
+    success_code: 250
+    notes: "Resets any in-progress transaction"
+
+  - command: RCPT TO
+    syntax: "RCPT TO:<forward-path>"
+    description: >-
+      Specifies an envelope recipient. Multiple RCPT TO commands can be used
+      to specify multiple recipients in one transaction.
+    success_code: 250
+
+  - command: DATA
+    syntax: "DATA"
+    description: >-
+      Initiates message content transfer. Message is terminated by a line
+      containing only a period (.). Message must conform to RFC 5322.
+    success_code: 354
+    termination: "<CRLF>.<CRLF>"
+
+  - command: RSET
+    syntax: "RSET"
+    description: >-
+      Resets the current mail transaction. Clears all buffers including sender,
+      recipients, and any queued message data.
+    success_code: 250
+
+  - command: VRFY
+    syntax: "VRFY <string>"
+    description: >-
+      Verifies whether a mailbox exists on the server. Often disabled for
+      anti-spam reasons.
+    success_code: 250
+
+  - command: EXPN
+    syntax: "EXPN <string>"
+    description: Expands a mailing list to show individual addresses.
+    success_code: 250
+
+  - command: NOOP
+    syntax: "NOOP"
+    description: No operation - does nothing but return a 250 response. Used to test connections.
+    success_code: 250
+
+  - command: QUIT
+    syntax: "QUIT"
+    description: Closes the SMTP connection. Server responds with 221 and closes the TCP connection.
+    success_code: 221
+
+  - command: STARTTLS
+    syntax: "STARTTLS"
+    description: >-
+      Upgrades a plain SMTP connection to TLS-encrypted. Only available if
+      server advertises STARTTLS in EHLO response. Defined in RFC 3207.
+    success_code: 220
+    introduced: "RFC 3207"
+
+  - command: AUTH
+    syntax: "AUTH <mechanism> [initial-response]"
+    description: >-
+      Authenticates the client using the specified SASL mechanism. Common
+      mechanisms include PLAIN, LOGIN, and XOAUTH2.
+    success_code: 235
+    introduced: "RFC 4954"
+
+# SMTP Response Codes (RFC 5321 Section 4.2)
+response_codes:
+  positive_completion:
+    - code: 211
+      meaning: System status or help reply
+    - code: 214
+      meaning: Help message
+    - code: 220
+      meaning: Service ready
+    - code: 221
+      meaning: Service closing transmission channel
+    - code: 235
+      meaning: Authentication successful
+    - code: 250
+      meaning: Requested mail action okay, completed
+    - code: 251
+      meaning: User not local; will forward to <forward-path>
+    - code: 252
+      meaning: Cannot verify user, but will accept message and attempt delivery
+
+  positive_intermediate:
+    - code: 334
+      meaning: Server challenge (AUTH continuation)
+    - code: 354
+      meaning: Start mail input; end with <CRLF>.<CRLF>
+
+  transient_negative:
+    - code: 421
+      meaning: Service not available, closing transmission channel
+    - code: 450
+      meaning: Requested mail action not taken - mailbox unavailable (try again later)
+    - code: 451
+      meaning: Requested action aborted - local error in processing
+    - code: 452
+      meaning: Requested action not taken - insufficient system storage
+
+  permanent_negative:
+    - code: 500
+      meaning: Syntax error, command unrecognized
+    - code: 501
+      meaning: Syntax error in parameters or arguments
+    - code: 502
+      meaning: Command not implemented
+    - code: 503
+      meaning: Bad sequence of commands
+    - code: 504
+      meaning: Command parameter not implemented
+    - code: 535
+      meaning: Authentication credentials invalid
+    - code: 550
+      meaning: Requested action not taken - mailbox unavailable
+    - code: 551
+      meaning: User not local; please try <forward-path>
+    - code: 552
+      meaning: Requested mail action aborted - exceeded storage allocation
+    - code: 553
+      meaning: Requested action not taken - mailbox name not allowed
+    - code: 554
+      meaning: Transaction failed
+
+# ESMTP Extensions
+extensions:
+  - name: STARTTLS
+    rfc: RFC 3207
+    description: Upgrade to TLS encrypted connection
+  - name: AUTH
+    rfc: RFC 4954
+    description: SASL authentication mechanism selection
+  - name: SIZE
+    rfc: RFC 1870
+    description: Message size declaration
+  - name: 8BITMIME
+    rfc: RFC 1652
+    description: 8-bit MIME content transmission
+  - name: PIPELINING
+    rfc: RFC 2920
+    description: Multiple commands sent without waiting for each response
+  - name: SMTPUTF8
+    rfc: RFC 6531
+    description: Internationalized email addresses (UTF-8)
+  - name: DSN
+    rfc: RFC 3461
+    description: Delivery status notifications
+  - name: BDAT
+    rfc: RFC 3030
+    description: Binary/chunked data transmission
+
+# Standard Ports
+ports:
+  - port: 25
+    name: SMTP
+    use: Server-to-server mail transfer (MTA to MTA)
+    security: Optional STARTTLS
+  - port: 587
+    name: Submission
+    use: Client-to-server mail submission (MUA to MTA). Required authentication.
+    rfc: RFC 4409
+    security: STARTTLS required
+  - port: 465
+    name: SMTPS
+    use: SMTP over TLS (implicit). Deprecated but widely used.
+    security: TLS (implicit, from connection start)
+
+# Related Standards
+related_standards:
+  - rfc: RFC 5321
+    title: Simple Mail Transfer Protocol (primary SMTP standard)
+    year: 2008
+  - rfc: RFC 5322
+    title: Internet Message Format (email message structure)
+    year: 2008
+  - rfc: RFC 2045
+    title: MIME Part One - Format of Internet Message Bodies
+    year: 1996
+  - rfc: RFC 3463
+    title: Enhanced Mail System Status Codes
+    year: 2003
+  - rfc: RFC 4409
+    title: Message Submission for Mail
+    year: 2006
+  - rfc: RFC 3207
+    title: SMTP Service Extension for Secure SMTP over Transport Layer Security
+    year: 2002
+  - rfc: RFC 4954
+    title: SMTP Service Extension for Authentication
+    year: 2007
+  - rfc: RFC 7208
+    title: Sender Policy Framework (SPF)
+    year: 2014
+  - rfc: RFC 6376
+    title: DomainKeys Identified Mail (DKIM)
+    year: 2011
+  - rfc: RFC 7489
+    title: Domain-based Message Authentication, Reporting, and Conformance (DMARC)
+    year: 2015
+
+# Authentication Mechanisms
+auth_mechanisms:
+  - mechanism: PLAIN
+    description: Username and password transmitted as base64-encoded string (requires TLS)
+  - mechanism: LOGIN
+    description: Username and password sent separately in base64 (legacy, requires TLS)
+  - mechanism: CRAM-MD5
+    description: Challenge-response authentication using HMAC-MD5
+  - mechanism: DIGEST-MD5
+    description: Challenge-response with MD5 digest (deprecated)
+  - mechanism: XOAUTH2
+    description: OAuth 2.0 bearer token authentication (Gmail, Outlook)
+  - mechanism: OAUTHBEARER
+    rfc: RFC 7628
+    description: Standard OAuth 2.0 bearer token SASL mechanism

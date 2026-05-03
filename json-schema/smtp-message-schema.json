@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://smtp.standard/schemas/message",
+  "title": "SMTP Email Message",
+  "description": "Schema representing an email message as defined by RFC 5321 (SMTP) and RFC 5322 (Internet Message Format)",
+  "type": "object",
+  "required": ["from", "to", "subject"],
+  "properties": {
+    "from": {
+      "type": "string",
+      "format": "email",
+      "description": "The sender's email address (RFC 5322 From header / SMTP MAIL FROM)"
+    },
+    "to": {
+      "oneOf": [
+        {"type": "string", "format": "email"},
+        {
+          "type": "array",
+          "items": {"type": "string", "format": "email"},
+          "minItems": 1
+        }
+      ],
+      "description": "Recipient address(es) (RFC 5322 To header / SMTP RCPT TO)"
+    },
+    "cc": {
+      "oneOf": [
+        {"type": "string", "format": "email"},
+        {
+          "type": "array",
+          "items": {"type": "string", "format": "email"}
+        }
+      ],
+      "description": "Carbon copy recipient(s)"
+    },
+    "bcc": {
+      "oneOf": [
+        {"type": "string", "format": "email"},
+        {
+          "type": "array",
+          "items": {"type": "string", "format": "email"}
+        }
+      ],
+      "description": "Blind carbon copy recipient(s) - not included in message headers"
+    },
+    "replyTo": {
+      "type": "string",
+      "format": "email",
+      "description": "Reply-To address if different from From"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Email subject line (RFC 5322 Subject header)"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Message creation date and time (RFC 5322 Date header)"
+    },
+    "messageId": {
+      "type": "string",
+      "description": "Unique message identifier in format <local@domain> (RFC 5322 Message-ID)"
+    },
+    "body": {
+      "$ref": "#/definitions/MessageBody"
+    },
+    "headers": {
+      "type": "object",
+      "description": "Additional RFC 5322 headers as key-value pairs",
+      "additionalProperties": {"type": "string"}
+    },
+    "attachments": {
+      "type": "array",
+      "description": "MIME attachments",
+      "items": {
+        "$ref": "#/definitions/Attachment"
+      }
+    }
+  },
+  "definitions": {
+    "MessageBody": {
+      "type": "object",
+      "description": "The message body content",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Plain text body (text/plain MIME part)"
+        },
+        "html": {
+          "type": "string",
+          "description": "HTML body (text/html MIME part)"
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "MIME content type for multipart messages",
+          "examples": ["multipart/mixed", "multipart/alternative", "text/plain", "text/html"]
+        }
+      }
+    },
+    "Attachment": {
+      "type": "object",
+      "required": ["filename", "contentType"],
+      "properties": {
+        "filename": {
+          "type": "string",
+          "description": "Attachment filename"
+        },
+        "contentType": {
+          "type": "string",
+          "description": "MIME content type (e.g., application/pdf, image/png)"
+        },
+        "contentId": {
+          "type": "string",
+          "description": "Content-ID for inline attachments"
+        },
+        "disposition": {
+          "type": "string",
+          "enum": ["attachment", "inline"],
+          "description": "Content disposition type"
+        },
+        "size": {
+          "type": "integer",
+          "description": "File size in bytes"
+        }
+      }
+    }
+  }
+}

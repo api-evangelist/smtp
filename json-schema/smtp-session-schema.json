@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://smtp.standard/schemas/session",
+  "title": "SMTP Session",
+  "description": "Schema representing an SMTP protocol session as defined in RFC 5321",
+  "type": "object",
+  "properties": {
+    "host": {
+      "type": "string",
+      "description": "SMTP server hostname or IP address"
+    },
+    "port": {
+      "type": "integer",
+      "description": "TCP port number",
+      "examples": [25, 465, 587],
+      "default": 25
+    },
+    "secure": {
+      "type": "string",
+      "enum": ["none", "tls", "starttls"],
+      "description": "TLS/SSL security mode. Port 465 uses TLS, port 587 uses STARTTLS"
+    },
+    "authentication": {
+      "$ref": "#/definitions/Authentication"
+    },
+    "clientHostname": {
+      "type": "string",
+      "description": "The client's FQDN sent in EHLO/HELO command"
+    },
+    "extensions": {
+      "type": "array",
+      "description": "ESMTP extensions supported by the server (from EHLO response)",
+      "items": {
+        "type": "string"
+      },
+      "examples": [["STARTTLS", "AUTH LOGIN PLAIN", "8BITMIME", "PIPELINING", "SIZE 52428800"]]
+    },
+    "transaction": {
+      "$ref": "#/definitions/Transaction"
+    }
+  },
+  "definitions": {
+    "Authentication": {
+      "type": "object",
+      "properties": {
+        "mechanism": {
+          "type": "string",
+          "enum": ["PLAIN", "LOGIN", "CRAM-MD5", "DIGEST-MD5", "XOAUTH2"],
+          "description": "SASL authentication mechanism"
+        },
+        "username": {
+          "type": "string",
+          "description": "Authentication username"
+        }
+      }
+    },
+    "Transaction": {
+      "type": "object",
+      "description": "A single SMTP mail transaction (MAIL FROM through DATA)",
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "email",
+          "description": "Envelope sender (MAIL FROM command)"
+        },
+        "recipients": {
+          "type": "array",
+          "description": "Envelope recipients (RCPT TO commands)",
+          "items": {
+            "type": "string",
+            "format": "email"
+          },
+          "minItems": 1
+        },
+        "messageSize": {
+          "type": "integer",
+          "description": "Estimated message size in bytes"
+        }
+      }
+    },
+    "SMTPCommand": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string",
+          "enum": ["EHLO", "HELO", "MAIL", "RCPT", "DATA", "RSET", "VRFY", "EXPN", "NOOP", "QUIT", "STARTTLS", "AUTH"],
+          "description": "SMTP command verb"
+        },
+        "parameters": {
+          "type": "string",
+          "description": "Command parameters (e.g., FROM:<user@example.com>)"
+        }
+      }
+    },
+    "SMTPResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "Three-digit SMTP response code",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable response message"
+        },
+        "enhanced": {
+          "type": "string",
+          "pattern": "^[245]\\.[0-9]+\\.[0-9]+$",
+          "description": "Enhanced status code (RFC 3463) e.g., 2.0.0, 5.1.1"
+        }
+      }
+    }
+  }
+}

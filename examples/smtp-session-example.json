@@ -1,0 +1,104 @@
+{
+  "description": "A complete SMTP session example demonstrating the RFC 5321 command/response flow for sending an email",
+  "standard": "RFC 5321",
+  "port": 587,
+  "security": "STARTTLS",
+  "session": [
+    {
+      "direction": "server",
+      "data": "220 mail.example.com ESMTP Postfix",
+      "note": "Server greeting (220 = Service Ready)"
+    },
+    {
+      "direction": "client",
+      "data": "EHLO client.sender.com",
+      "note": "Client identification using Extended HELLO"
+    },
+    {
+      "direction": "server",
+      "data": "250-mail.example.com\n250-PIPELINING\n250-SIZE 52428800\n250-STARTTLS\n250-AUTH LOGIN PLAIN\n250-8BITMIME\n250 SMTPUTF8",
+      "note": "Server capabilities list (250 = Requested action completed)"
+    },
+    {
+      "direction": "client",
+      "data": "STARTTLS",
+      "note": "Request TLS upgrade"
+    },
+    {
+      "direction": "server",
+      "data": "220 2.0.0 Ready to start TLS",
+      "note": "TLS negotiation begins"
+    },
+    {
+      "note": "[ TLS handshake occurs ]"
+    },
+    {
+      "direction": "client",
+      "data": "EHLO client.sender.com",
+      "note": "Re-identify after TLS establishment"
+    },
+    {
+      "direction": "server",
+      "data": "250-mail.example.com\n250-AUTH LOGIN PLAIN\n250-8BITMIME\n250 SMTPUTF8"
+    },
+    {
+      "direction": "client",
+      "data": "AUTH PLAIN dXNlcm5hbWUAdXNlcm5hbWUAcGFzc3dvcmQ=",
+      "note": "SASL PLAIN authentication (base64 encoded)"
+    },
+    {
+      "direction": "server",
+      "data": "235 2.7.0 Authentication successful"
+    },
+    {
+      "direction": "client",
+      "data": "MAIL FROM:<alice@sender.com>",
+      "note": "Begin mail transaction - specify envelope sender"
+    },
+    {
+      "direction": "server",
+      "data": "250 2.1.0 Ok",
+      "note": "Sender accepted"
+    },
+    {
+      "direction": "client",
+      "data": "RCPT TO:<bob@example.com>",
+      "note": "Specify envelope recipient"
+    },
+    {
+      "direction": "server",
+      "data": "250 2.1.5 Ok",
+      "note": "Recipient accepted"
+    },
+    {
+      "direction": "client",
+      "data": "DATA",
+      "note": "Begin message data transfer"
+    },
+    {
+      "direction": "server",
+      "data": "354 End data with <CR><LF>.<CR><LF>",
+      "note": "Ready to receive message data"
+    },
+    {
+      "direction": "client",
+      "data": "From: Alice Smith <alice@sender.com>\r\nTo: Bob Jones <bob@example.com>\r\nSubject: Hello from SMTP\r\nDate: Fri, 02 May 2026 10:00:00 +0000\r\nMessage-ID: <20260502100000.abc123@sender.com>\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nHi Bob,\r\n\r\nThis is a test email sent via SMTP per RFC 5321.\r\n\r\nBest regards,\r\nAlice\r\n.",
+      "note": "Full RFC 5322 message terminated by <CRLF>.<CRLF>"
+    },
+    {
+      "direction": "server",
+      "data": "250 2.0.0 Ok: queued as A1B2C3D4E5",
+      "note": "Message accepted and queued for delivery"
+    },
+    {
+      "direction": "client",
+      "data": "QUIT",
+      "note": "End session"
+    },
+    {
+      "direction": "server",
+      "data": "221 2.0.0 Bye",
+      "note": "Connection closing (221 = Service closing)"
+    }
+  ]
+}
