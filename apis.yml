@@ -8,7 +8,7 @@ description: >-
   along with a comprehensive set of response codes. SMTP works in conjunction with
   RFC 5322 (Internet Message Format) which defines the structure of email messages.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - SMTP
   - Email
