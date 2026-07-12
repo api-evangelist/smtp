@@ -64,6 +64,8 @@ apis:
         url: https://datatracker.ietf.org/doc/html/rfc5322
 
 common:
+  - type: DomainSecurity
+    url: security/smtp-domain-security.yml
   - type: IETF RFC
     url: https://datatracker.ietf.org/doc/html/rfc5321
   - type: RFC Editor
