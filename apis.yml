@@ -38,6 +38,14 @@ tags:
   - Internet Standards
   - IETF
   - Messaging
+  - Protocol
+  - RFC 5321
+tags_raw:
+  - SMTP
+  - Email
+  - Internet Standards
+  - IETF
+  - Messaging
   - Protocols
   - RFC 5321
 created: '2025-01-01'
