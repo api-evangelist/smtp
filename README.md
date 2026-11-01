@@ -1,4 +1,4 @@
-# SMTP (Simple Mail Transfer Protocol)
+# SMTP
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,48 +64,142 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Simple Mail Transfer Protocol (SMTP) is the foundational internet standard for transmitting electronic mail across networks. Defined in RFC 5321 (October 2008), SMTP uses a command-response model over TCP with a comprehensive set of commands (EHLO, MAIL FROM, RCPT TO, DATA, QUIT) and numeric response codes. Works in conjunction with RFC 5322 (Internet Message Format) for message structure.
+Simple Mail Transfer Protocol (SMTP) is the foundational internet standard for transmitting electronic mail across networks. Defined in RFC 5321 (October 2008), SMTP uses a command-response model over TCP port 25 (or 587 for submission, 465 for SMTPS). It defines commands including EHLO, MAIL FROM, RCPT TO, and DATA, along with a comprehensive set of response codes. SMTP works in conjunction with RFC 5322 (Internet Message Format) which defines the structure of email messages.
 
-## Standards
+**Areas:** SMTP · Email · Internet Standards · IETF · Messaging · Protocol · RFC 5321
 
-| Standard | Description |
-|----------|-------------|
-| [RFC 5321](https://datatracker.ietf.org/doc/html/rfc5321) | Simple Mail Transfer Protocol (primary specification) |
-| [RFC 5322](https://datatracker.ietf.org/doc/html/rfc5322) | Internet Message Format (email message structure) |
+## SMTP on APIs.io
 
-## Artifacts
+Everything profiled for SMTP is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/smtp/](https://apis.io/providers/smtp/)** — or go straight to one of the APIs or properties below.
 
-### JSON Schema
-- [smtp-message-schema.json](json-schema/smtp-message-schema.json) — Email message schema (RFC 5321/5322)
-- [smtp-session-schema.json](json-schema/smtp-session-schema.json) — SMTP session and commands schema
+### APIs (2)
 
-### JSON Structure
-- [smtp-message-structure.json](json-structure/smtp-message-structure.json) — Email message object structure
+- [RFC 5321 - Simple Mail Transfer Protocol](https://apis.io/apis/smtp/rfc5321/) — RFC 5321 is the IETF standard defining the Simple Mail Transfer Protocol. It specifies the client-server protocol used to transmit email across the…
+- [RFC 5322 - Internet Message Format](https://apis.io/apis/smtp/rfc5322/) — RFC 5322 defines the format of electronic mail messages transmitted via SMTP. It specifies the syntax for message headers (From, To, Subject, Date, etc.)…
 
-### JSON-LD
-- [smtp-context.jsonld](json-ld/smtp-context.jsonld) — Linked data context mapping SMTP concepts to schema.org
+### Published properties
 
-### Examples
-- [smtp-session-example.json](examples/smtp-session-example.json) — Complete SMTP session command/response flow
-- [smtp-message-example.json](examples/smtp-message-example.json) — RFC 5322 message with MIME attachment
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-### Vocabulary
-- [smtp-vocabulary.yml](vocabulary/smtp-vocabulary.yml) — Complete SMTP vocabulary: commands, response codes, extensions, ports
+#### JSON Schema (2)
 
-## Protocol Overview
+The data models the API reads and writes.
 
-**Standard Ports:**
-- Port 25: Server-to-server transfer (MTA to MTA)
-- Port 587: Client submission (MUA to MTA, authentication required)
-- Port 465: SMTP over TLS (implicit)
+- [SMTP Email Message](https://apis.io/schemas/smtp/smtp-message/)
+- [SMTP Session](https://apis.io/schemas/smtp/smtp-session/)
 
-**Key ESMTP Extensions:** STARTTLS, AUTH, SIZE, 8BITMIME, PIPELINING, SMTPUTF8, DSN
+#### JSON Structure (1)
 
-## Related Standards
+Data models expressed in JSON Structure.
 
-- [RFC 5322](https://datatracker.ietf.org/doc/html/rfc5322) — Internet Message Format
-- [RFC 3207](https://datatracker.ietf.org/doc/html/rfc3207) — STARTTLS extension
-- [RFC 4954](https://datatracker.ietf.org/doc/html/rfc4954) — AUTH extension
-- [RFC 7208](https://datatracker.ietf.org/doc/html/rfc7208) — Sender Policy Framework (SPF)
-- [RFC 6376](https://datatracker.ietf.org/doc/html/rfc6376) — DKIM
-- [RFC 7489](https://datatracker.ietf.org/doc/html/rfc7489) — DMARC
+- [Smtp Message Structure](https://apis.io/json-structure/smtp/smtp-message-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Smtp Context](https://apis.io/jsonld/smtp/smtp-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [SMTP Vocabulary](https://apis.io/vocabularies/smtp/smtp-vocabulary/)
+
+#### Examples (2)
+
+Example requests and responses.
+
+- [Smtp Message Example](https://apis.io/examples/smtp/smtp-message-example/)
+- [Smtp Session Example](https://apis.io/examples/smtp/smtp-session-example/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [SMTP — jsonschema rules](https://apis.io/rules/smtp/smtp-jsonschema-spectral-rules/)
+
+#### Security (1)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Smtp Domain Security](https://apis.io/security/smtp/smtp-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Smtp Plans Pricing](https://apis.io/plans/smtp/smtp-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Smtp Rate Limits](https://apis.io/rate-limits/smtp/smtp-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Smtp Finops](https://apis.io/finops/smtp/smtp-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.ietf.org/)
+
+## API Evangelist rating
+
+**Kin Score 11.5** — emerging · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 10.7 |
+| Contract governance | 9.8 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 0.0 |
+| Access clarity | 7.9 |
+
+**Agent readiness 0.6** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | — |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 10.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/smtp/](https://apis.io/providers/smtp/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for SMTP: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/smtp/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
